@@ -461,7 +461,7 @@ tsne3d = TSNE(
     init='random',
     random_state=101,
     method='barnes_hut',
-    n_iter=1000,
+    max_iter=1000,
     verbose=2,
     angle=0.5
 ).fit_transform(X)
