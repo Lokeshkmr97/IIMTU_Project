@@ -436,7 +436,6 @@ X = MinMaxScaler().fit_transform(new_df[['cwc_min', 'cwc_max', 'csc_min', 'csc_m
 y = new_df['is_duplicate'].values
 
 
-# In[ ]:
 
 
 from sklearn.manifold import TSNE
@@ -717,6 +716,31 @@ rf.predict(query_point_creator(q2,q3))
 # get_ipython().system('jupyter nbconvert --to script question_pair.ipynb')
 
 
+# ---------------- Streamlit UI ----------------
+import streamlit as st
+
+st.title("Quora Question Pair Duplicate Checker")
+st.write("Enter two questions below to check if they are duplicates using your trained model.")
+
+# Input fields
+q1_input = st.text_area("Enter Question 1")
+q2_input = st.text_area("Enter Question 2")
+
+if st.button("Check Duplicate"):
+    if q1_input.strip() == "" or q2_input.strip() == "":
+        st.warning(" Please enter both questions.")
+    else:
+        try:
+            # Use your existing query_point_creator and rf model
+            features = query_point_creator(q1_input, q2_input)
+            prediction = rf.predict(features)[0]
+
+            if prediction == 1:
+                st.success(" These questions are duplicates.")
+            else:
+                st.error(" These questions are not duplicates.")
+        except Exception as e:
+            st.error(f"Error: {e}")
 
 
 
